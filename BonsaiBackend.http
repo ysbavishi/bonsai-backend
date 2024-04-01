@@ -1,0 +1,6 @@
+@BonsaiBackend_HostAddress = http://localhost:5285
+
+GET {{BonsaiBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
