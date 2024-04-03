@@ -1,11 +1,24 @@
+using System;
+using System.Data;
 using System.Linq.Expressions;
 using BonsaiBackend.Models;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using Microsoft.EntityFrameworkCore;
 
 public class GenericeRepository<T> : IGenericRepository<T> where T:class {
     protected readonly DBBonsaiContext _context;
     public GenericeRepository(DBBonsaiContext context) {
         this._context = context;
+    }
+
+    public bool CompleteChanges() {
+        try {
+            _context.SaveChanges();
+            return true;
+        } catch (Exception err) {
+            Console.WriteLine(err);
+            return false;
+        }
     }
 
     public T GetById(int id) {
@@ -21,8 +34,9 @@ public class GenericeRepository<T> : IGenericRepository<T> where T:class {
     }
 
     public void Update(T t) {
-         _context.Update(t);
-         _context.SaveChanges();
+        // T existingEntity = _context.Set<T>().Find(id);
+        _context.Entry(t).State = EntityState.Modified;
+        _context.SaveChanges();
     }
 
     public void Add(T t) {

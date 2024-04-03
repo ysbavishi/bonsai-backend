@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 using BonsaiBackend.DTO;
 using AutoMapper;
 using System.Runtime.InteropServices.Marshalling;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace BonsaiBackend.Controllers
 {
     [Route("api/[controller]")]    
@@ -19,7 +20,7 @@ namespace BonsaiBackend.Controllers
         }
         // Get user by Id
         [HttpGet]
-        public IActionResult GetUserById(int id) {
+        public IActionResult GetUserById([FromBody] int id) {
             Console.WriteLine(id);
             try {
                 var user = _repo.GetById(Convert.ToInt32(id));
@@ -52,6 +53,10 @@ namespace BonsaiBackend.Controllers
                 var temp = _repo.Find(acc => acc.Email == UserDt.Email);
                 Users user = _mapper.Map<Users>(temp.FirstOrDefault());
                 _repo.Remove(user);
+                bool status = _repo.CompleteChanges();
+                if (!status) {
+                    return Ok("Not working");
+                }
                 return Ok(user);
            } catch (Exception e) {
             Console.WriteLine(e);
@@ -60,19 +65,22 @@ namespace BonsaiBackend.Controllers
             
         }
         [HttpPut]
-        public IActionResult Update([FromBody] UserDto UserDt) {
-            Console.WriteLine("CAlled");
+        public IActionResult UpdateUser([FromBody] UserDto UserDt) {
             try {
-                var temp = _repo.Find(acc => acc.Email == UserDt.Email);
-                Users user = _mapper.Map<Users>(temp.FirstOrDefault());
-                user.Name = UserDt.Name;
-                _repo.Update(user);
-                var temp2 = _repo.Find(acc => acc.Email == UserDt.Email);
-                return Ok(temp2);
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                return Ok("Not working");
-            }
+                var user = _repo.Find(acc => acc.Email == UserDt.Email);
+                Users use = user.FirstOrDefault();
+                use.Email = UserDt.Email;
+                use.Name = UserDt.Name;
+                use.Password = UserDt.Password;
+                if(ModelState.IsValid) {
+                    _repo.Update(use);
+                    return Ok("Passed");
+                } 
+                return Ok("Mistake"); 
+            } catch (Exception err) {
+                Console.WriteLine(err);
+                return NotFound("Error");
+            }  
         }
     }
 }

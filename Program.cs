@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// "DBBonsaiDatabase": "Server=\\SQLEXPRESS;initial catalog=IVP_3310;user id=sa;password=sa@12345678;trusted_connection=True;TrustServerCertificate=True"
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
