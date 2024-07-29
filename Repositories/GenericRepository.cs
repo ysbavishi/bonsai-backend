@@ -40,8 +40,12 @@ public class GenericeRepository<T> : IGenericRepository<T> where T:class {
     }
 
     public void Add(T t) {
-        _context.Set<T>().Add(t);
-        _context.SaveChanges();
+        if (object.ReferenceEquals(t, null)) {
+            Console.WriteLine("Error");
+        } else {
+            _context.Set<T>().Add(t);
+            _context.SaveChanges();
+        }
     }
 
     public void AddRange(IEnumerable<T> t) {

@@ -275,3 +275,4 @@ C:\Users\ysbavishi\Documents\bonsai\obj\Debug\net8.0\BonsaiBackend.pdb
 C:\Users\ysbavishi\Documents\bonsai\obj\Debug\net8.0\BonsaiBackend.genruntimeconfig.cache
 C:\Users\ysbavishi\Documents\bonsai\obj\Debug\net8.0\ref\BonsaiBackend.dll
 C:\Users\ysbavishi\Documents\bonsai\obj\Debug\net8.0\BonsaiBa.C21EEF6E.Up2Date
+C:\Users\ysbavishi\Documents\bonsai\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

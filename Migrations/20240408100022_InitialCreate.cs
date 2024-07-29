@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -33,7 +34,7 @@ namespace BonsaiBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,6 +56,7 @@ namespace BonsaiBackend.Migrations
                     ClientId = table.Column<int>(type: "int", nullable: false),
                     ClientsId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -81,7 +83,12 @@ namespace BonsaiBackend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ClientId = table.Column<int>(type: "int", nullable: false)
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    TaskId = table.Column<int>(type: "int", nullable: true),
+                    TasksTaskId = table.Column<int>(type: "int", nullable: false),
+                    CurrentDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -92,6 +99,12 @@ namespace BonsaiBackend.Migrations
                         principalTable: "Client",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TaskTime_Task_TasksTaskId",
+                        column: x => x.TasksTaskId,
+                        principalTable: "Task",
+                        principalColumn: "TaskId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TaskTime_User_UserId",
                         column: x => x.UserId,
@@ -144,6 +157,12 @@ namespace BonsaiBackend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Client_Email",
+                table: "Client",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Client_UserId",
                 table: "Client",
                 column: "UserId");
@@ -182,6 +201,11 @@ namespace BonsaiBackend.Migrations
                 name: "IX_TaskTime_ClientId",
                 table: "TaskTime",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TaskTime_TasksTaskId",
+                table: "TaskTime",
+                column: "TasksTaskId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskTime_UserId",

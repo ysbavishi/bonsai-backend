@@ -23,6 +23,10 @@ namespace BonsaiBackend.Models {
                 .WithMany()
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<TaskTimes>()
+                .HasOne(c => c.Tasks)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Payments>()
                 .HasOne(c => c.Users)
                 .WithMany()
@@ -38,6 +42,7 @@ namespace BonsaiBackend.Models {
                 .WithMany()
                 .HasForeignKey(x => x.TaskId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Clients>().HasIndex(u => u.Email).IsUnique();
         }
         /*
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

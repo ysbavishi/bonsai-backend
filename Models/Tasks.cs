@@ -12,6 +12,7 @@ namespace BonsaiBackend.Models
         [ForeignKey("User")]
         public int UserId {get; set;}
         public virtual Users Users {get; set;}
+        public required string Description {get; set;}
         public bool Status {get; set;}
     }
 }
